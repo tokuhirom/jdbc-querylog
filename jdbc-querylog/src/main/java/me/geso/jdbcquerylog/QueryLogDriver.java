@@ -87,7 +87,7 @@ public class QueryLogDriver implements Driver {
 
     @FunctionalInterface
     public interface PrintExplainCallback {
-        void accept(Connection connection, String query, Object[] header, List<Object[]> rows);
+        void accept(Connection connection, String query, String[] header, List<Object[]> rows);
     }
 
     @Override

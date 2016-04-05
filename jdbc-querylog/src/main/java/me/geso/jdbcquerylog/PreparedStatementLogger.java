@@ -31,14 +31,14 @@ public class PreparedStatementLogger implements PreparedStatementListener {
                     ResultSetMetaData metaData = resultSet.getMetaData();
                     int columnCount = metaData.getColumnCount();
 
-                    Object[] header = IntStream.rangeClosed(1, columnCount)
+                    String[] header = IntStream.rangeClosed(1, columnCount)
                             .mapToObj(i -> {
                                 try {
                                     return metaData.getColumnName(i);
                                 } catch (SQLException e) {
                                     throw new RuntimeException(e);
                                 }
-                            }).toArray();
+                            }).toArray(String[]::new);
 
                     List<Object[]> rows = new ArrayList<>();
                     while (resultSet.next()) {
@@ -51,7 +51,6 @@ public class PreparedStatementLogger implements PreparedStatementListener {
                                     }
                                 }).toArray();
                         rows.add(row);
-
                     }
 
                     QueryLogDriver.getPrintExplain().accept(
