@@ -6,8 +6,6 @@ import java.sql.*;
 
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        Class.forName("org.h2.Driver");
-
         // create fixture data.
         try (Connection fixtureConn = DriverManager.getConnection("jdbc:h2:mem:test")) {
             try (Statement stmt = fixtureConn.createStatement()) {
