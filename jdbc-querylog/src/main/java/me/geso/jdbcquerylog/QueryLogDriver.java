@@ -25,7 +25,7 @@ public class QueryLogDriver implements Driver {
     private static PrintExplainCallback printExplain = (connection, query, header, rows) -> {
         V2_AsciiTable at = new V2_AsciiTable();
         at.addRule();
-        at.addRow(header);
+        at.addRow((Object[]) header);
         at.addRule();
         rows.forEach(at::addRow);
         at.addRule();
