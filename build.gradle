@@ -16,7 +16,7 @@ subprojects {
     apply plugin: 'idea'
 
     group 'me.geso.jdbcquerylog'
-    version '0.1.0'
+    version '0.1.3'
 
     repositories {
         mavenCentral()

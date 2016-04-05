@@ -3,7 +3,7 @@ package me.geso.jdbcquerylog;
 import de.vandermeer.asciitable.v2.RenderedTable;
 import de.vandermeer.asciitable.v2.V2_AsciiTable;
 import de.vandermeer.asciitable.v2.render.V2_AsciiTableRenderer;
-import de.vandermeer.asciitable.v2.render.WidthAbsoluteEven;
+import de.vandermeer.asciitable.v2.render.WidthLongestLine;
 import de.vandermeer.asciitable.v2.themes.V2_E_TableThemes;
 import me.geso.jdbctracer.PreparedStatementListener;
 
@@ -27,7 +27,7 @@ public class PreparedStatementLogger implements PreparedStatementListener {
         if (QueryLogDriver.isCompact()) {
             query = compact(query);
         }
-        log.info("{}", query);
+        System.err.println(query);
         if (QueryLogDriver.isExplain()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement("EXPLAIN " + query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -58,10 +58,10 @@ public class PreparedStatementLogger implements PreparedStatementListener {
 
                     V2_AsciiTableRenderer rend = new V2_AsciiTableRenderer();
                     rend.setTheme(V2_E_TableThemes.UTF_LIGHT.get());
-                    rend.setWidth(new WidthAbsoluteEven(76));
+                    rend.setWidth(new WidthLongestLine());
                     RenderedTable render = rend.render(at);
                     for (String line : render.toString().split("\n")) {
-                        log.info("{}", line);
+                        System.err.println(line);
                     }
                 }
             }
@@ -69,7 +69,7 @@ public class PreparedStatementLogger implements PreparedStatementListener {
     }
 
     public String compact(String query) {
-        return query.replaceAll("\\n", "\\n");
+        return query.replaceAll("\\n", " ");
     }
 
     private String bind(String query, List<Object> binds) {
@@ -83,7 +83,7 @@ public class PreparedStatementLogger implements PreparedStatementListener {
                 if (value instanceof Integer || value instanceof Long) {
                     matcher.appendReplacement(sb, String.valueOf(value));
                 } else {
-                    matcher.appendReplacement(sb, '"' + String.valueOf(binds.get(idx++)) + '"');
+                    matcher.appendReplacement(sb, '"' + String.valueOf(value) + '"');
                 }
                 result = matcher.find();
             } while (result);
