@@ -1,18 +1,41 @@
 package me.geso.jdbcquerylog;
 
+import de.vandermeer.asciitable.v2.RenderedTable;
+import de.vandermeer.asciitable.v2.V2_AsciiTable;
+import de.vandermeer.asciitable.v2.render.V2_AsciiTableRenderer;
+import de.vandermeer.asciitable.v2.render.WidthLongestLine;
+import de.vandermeer.asciitable.v2.themes.V2_E_TableThemes;
 import me.geso.jdbctracer.TracerConnection;
 
 import java.sql.*;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 
 public class QueryLogDriver implements Driver {
     private static boolean enabled = true;
     private static boolean explain = false;
     private static boolean compact = true;
+    private static BiConsumer<Connection, String> printQuery = (connection, query) -> {
+        System.err.println(query);
+    };
+    private static PrintExplainCallback printExplain = (connection, query, header, rows) -> {
+        V2_AsciiTable at = new V2_AsciiTable();
+        at.addRule();
+        at.addRow(header);
+        at.addRule();
+        rows.forEach(at::addRow);
+        at.addRule();
+
+        V2_AsciiTableRenderer rend = new V2_AsciiTableRenderer();
+        rend.setTheme(V2_E_TableThemes.UTF_LIGHT.get());
+        rend.setWidth(new WidthLongestLine());
+        RenderedTable render = rend.render(at);
+        System.err.println(render.toString());
+    };
 
     static {
         try {
@@ -44,6 +67,27 @@ public class QueryLogDriver implements Driver {
 
     public static void setCompact(boolean compact) {
         QueryLogDriver.compact = compact;
+    }
+
+    public static void setPrintQuery(BiConsumer<Connection, String> printQuery) {
+        QueryLogDriver.printQuery = printQuery;
+    }
+
+    public static BiConsumer<Connection, String> getPrintQuery() {
+        return QueryLogDriver.printQuery;
+    }
+
+    public static PrintExplainCallback getPrintExplain() {
+        return printExplain;
+    }
+
+    public static void setPrintExplain(PrintExplainCallback printExplain) {
+        QueryLogDriver.printExplain = printExplain;
+    }
+
+    @FunctionalInterface
+    public interface PrintExplainCallback {
+        void accept(Connection connection, String query, Object[] header, List<Object[]> rows);
     }
 
     @Override
