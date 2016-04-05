@@ -1,0 +1,7 @@
+rootProject.name = 'jdbc-querylog-root'
+
+include ':jdbc-querylog'
+include ':sample'
+
+project(':jdbc-querylog').projectDir = "$rootDir/jdbc-querylog" as File
+project(':sample').projectDir = "$rootDir/sample" as File

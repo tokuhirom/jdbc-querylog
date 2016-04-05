@@ -1,0 +1,48 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'maven'
+apply plugin: 'idea'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+repositories {
+  mavenCentral()
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    group 'me.geso.jdbcquerylog'
+    version '0.1.0'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from "${buildDir}/javadoc"
+    }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    compileJava {
+        options.compilerArgs << '-XDignore.symbol.file' << '-Xlint:all'
+    }
+
+    artifacts {
+        archives javadocJar, sourcesJar
+    }
+}
+
