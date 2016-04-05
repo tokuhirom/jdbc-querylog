@@ -43,7 +43,7 @@ public class PreparedStatementLogger implements PreparedStatementListener {
                                     } catch (SQLException e) {
                                         throw new RuntimeException(e);
                                     }
-                                }).toArray(String[]::new));
+                                }).toArray());
                         at.addRule();
                         at.addRow(IntStream.rangeClosed(1, columnCount)
                                 .mapToObj(i -> {
@@ -52,7 +52,7 @@ public class PreparedStatementLogger implements PreparedStatementListener {
                                     } catch (SQLException e) {
                                         throw new RuntimeException(e);
                                     }
-                                }).toArray(String[]::new));
+                                }).toArray());
                         at.addRule();
                     }
 
