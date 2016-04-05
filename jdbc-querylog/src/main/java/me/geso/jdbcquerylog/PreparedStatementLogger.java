@@ -40,16 +40,16 @@ public class PreparedStatementLogger implements PreparedStatementListener {
                                 }
                             }).toArray(String[]::new);
 
-                    List<Object[]> rows = new ArrayList<>();
+                    List<String[]> rows = new ArrayList<>();
                     while (resultSet.next()) {
-                        Object[] row = IntStream.rangeClosed(1, columnCount)
+                        String[] row = IntStream.rangeClosed(1, columnCount)
                                 .mapToObj(i -> {
                                     try {
                                         return resultSet.getString(i);
                                     } catch (SQLException e) {
                                         throw new RuntimeException(e);
                                     }
-                                }).toArray();
+                                }).toArray(String[]::new);
                         rows.add(row);
                     }
 
