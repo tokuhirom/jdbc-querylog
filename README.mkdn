@@ -1,0 +1,65 @@
+# jdbc-tracer
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.geso.jdbctracer/jdbc-tracer/badge.svg)](https://maven-badges.herokuapp.com/maven-central/me.geso.jdbctracer/jdbc-tracer)
+[![javadoc.io](https://javadocio-badges.herokuapp.com/me.geso.jdbctracer/jdbc-tracer/badge.svg)](https://javadocio-badges.herokuapp.com/me.geso.jdbctracer/jdbc-tracer)
+[![Circle CI](https://circleci.com/gh/tokuhirom/jdbc-querylog.svg?style=svg)](https://circleci.com/gh/tokuhirom/jdbc-querylog)
+
+jdbc-tracer is a JDBC driver, which provides hook points to trace all queries.
+
+## Use cases
+
+ * Record all statements executed by JDBC driver
+ * Detect heavy queries in development environment.
+   * Send EXPLAIN statement
+ * Logging queries and parameters.
+ * Detect webapp controller, that sends too much SQL queries.
+
+## Listeners
+
+You need to implement PreparedStatementListener or ResultSetListener.
+
+### PreparedStatementListener
+
+You can get following values for each executed queries:
+
+ * connection
+ * elapsed time
+ * SQL statement
+ * binded variables
+
+### ResultSetListener
+
+You can get following values for each got rows:
+
+ * isFirstRow
+   * You may print column information on first row.
+ * resultSet
+   * you can get resultset information!
+     * (MUST NOT call `next()` from the listener. it cause infinite loop)
+
+## Install
+
+You can install this library from maven central.
+
+## License
+
+    The MIT License (MIT)
+    Copyright © 2016 Tokuhiro Matsuno, http://64p.org/ <tokuhirom@gmail.com>
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the “Software”), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.

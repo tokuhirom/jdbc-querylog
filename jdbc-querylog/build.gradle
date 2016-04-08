@@ -67,9 +67,10 @@ uploadArchives {
 }
 
 dependencies {
-    compile 'me.geso.jdbctracer:jdbc-tracer-core:0.1.0'
+    compile project(':jdbc-tracer')
     compile 'org.slf4j:slf4j-api:1.7.20'
     compile 'de.vandermeer:asciitable:0.2.5'
-    testCompile 'org.slf4j:slf4j-simple:1.7.20'
     compile 'org.projectlombok:lombok:1.16.8'
+
+    testCompile 'org.slf4j:slf4j-simple:1.7.20'
 }
