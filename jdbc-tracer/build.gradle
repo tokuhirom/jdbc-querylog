@@ -37,9 +37,9 @@ uploadArchives {
                 }
 
                 pom.project {
-                    name 'jdbc-query-log'
+                    name 'me.geso.jdbctracer'
                     packaging 'jar'
-                    description 'JDBC query log'
+                    description 'JDBC tracer'
                     url 'https://github.com/tokuhirom/jdbc_querylog'
 
                     scm {
@@ -67,9 +67,11 @@ uploadArchives {
 }
 
 dependencies {
-    compile 'me.geso.jdbctracer:jdbc-tracer-core:0.1.0'
-    compile 'org.slf4j:slf4j-api:1.7.20'
-    compile 'de.vandermeer:asciitable:0.2.5'
-    testCompile 'org.slf4j:slf4j-simple:1.7.20'
     compile 'org.projectlombok:lombok:1.16.8'
+
+    testCompile 'org.mockito:mockito-core:2.0.44-beta'
+    testCompile 'com.h2database:h2:1.4.191'
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.assertj:assertj-core:3.4.0'
 }
+
