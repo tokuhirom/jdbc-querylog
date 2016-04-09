@@ -22,7 +22,7 @@ public class QueryLogDriver implements Driver {
     private static BiConsumer<Connection, String> printQuery = (connection, query) -> {
         System.err.println(query);
     };
-    private static PrintExplainCallback printExplain = (connection, query, header, rows) -> {
+    private static ExplainHandler explainHandler = (connection, query, header, rows) -> {
         V2_AsciiTable at = new V2_AsciiTable();
         at.addRule();
         at.addRow((Object[]) header);
@@ -69,7 +69,7 @@ public class QueryLogDriver implements Driver {
         QueryLogDriver.compact = compact;
     }
 
-    public static void setPrintQuery(BiConsumer<Connection, String> printQuery) {
+    public static void setQueryHandler(BiConsumer<Connection, String> printQuery) {
         QueryLogDriver.printQuery = printQuery;
     }
 
@@ -77,16 +77,16 @@ public class QueryLogDriver implements Driver {
         return QueryLogDriver.printQuery;
     }
 
-    public static PrintExplainCallback getPrintExplain() {
-        return printExplain;
+    public static ExplainHandler getExplainHandler() {
+        return explainHandler;
     }
 
-    public static void setPrintExplain(PrintExplainCallback printExplain) {
-        QueryLogDriver.printExplain = printExplain;
+    public static void setExplainHandler(ExplainHandler explainHandler) {
+        QueryLogDriver.explainHandler = explainHandler;
     }
 
     @FunctionalInterface
-    public interface PrintExplainCallback {
+    public interface ExplainHandler {
         void accept(Connection connection, String query, String[] header, List<String[]> rows);
     }
 

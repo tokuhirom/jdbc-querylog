@@ -3,6 +3,8 @@ package com.example;
 import me.geso.jdbcquerylog.QueryLogDriver;
 
 import java.sql.*;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
@@ -19,6 +21,16 @@ public class Main {
 
     private static void doMain() throws SQLException {
         QueryLogDriver.setExplain(true);
+        QueryLogDriver.setQueryHandler((connection, query) -> {
+            System.err.println("Query: " + query);
+        });
+        QueryLogDriver.setExplainHandler((connection, query, header, rows) -> {
+            System.err.println("Query: " + query);
+            System.err.println("Header: " + Arrays.toString(header));
+            System.err.println("Rows: " + rows.stream()
+                    .map(it -> Arrays.stream(it).collect(Collectors.joining(",")))
+                    .collect(Collectors.joining("\n")));
+        });
 
         try (Connection conn = DriverManager.getConnection("jdbc:querylog:h2:mem:test")) {
             try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM user WHERE id=?")) {

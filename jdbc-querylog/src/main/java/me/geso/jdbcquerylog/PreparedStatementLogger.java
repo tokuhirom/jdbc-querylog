@@ -11,7 +11,6 @@ import java.util.stream.IntStream;
 
 public class PreparedStatementLogger implements PreparedStatementListener {
     private static final Pattern RE = Pattern.compile("(\\?)");
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(QueryLogDriver.class);
 
     @Override
     public void trace(Connection connection, long elapsed, String query, List<Object> args) throws SQLException {
@@ -53,7 +52,7 @@ public class PreparedStatementLogger implements PreparedStatementListener {
                         rows.add(row);
                     }
 
-                    QueryLogDriver.getPrintExplain().accept(
+                    QueryLogDriver.getExplainHandler().accept(
                             connection,
                             query,
                             header,

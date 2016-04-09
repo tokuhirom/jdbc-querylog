@@ -1,10 +1,10 @@
-# jdbc-tracer
+# JDBC QueryLog
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.geso.jdbcquerylog/jdbc-tracer/badge.svg)](https://maven-badges.herokuapp.com/maven-central/me.geso.jdbcquerylog/jdbc-tracer)
-[![javadoc.io](https://javadocio-badges.herokuapp.com/me.geso.jdbcquerylog/jdbc-tracer/badge.svg)](https://javadocio-badges.herokuapp.com/me.geso.jdbcquerylog/jdbc-tracer)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.geso.jdbcquerylog/jdbc-querylog/badge.svg)](https://maven-badges.herokuapp.com/maven-central/me.geso.jdbcquerylog/jdbc-querylog)
+[![javadoc.io](https://javadocio-badges.herokuapp.com/me.geso.jdbcquerylog/jdbc-querylog/badge.svg)](https://javadocio-badges.herokuapp.com/me.geso.jdbcquerylog/jdbc-querylog)
 [![Circle CI](https://circleci.com/gh/tokuhirom/jdbc-querylog.svg?style=svg)](https://circleci.com/gh/tokuhirom/jdbc-querylog)
 
-jdbc-tracer is a JDBC driver, which provides hook points to trace all queries.
+jdbc-querylog is a JDBC driver, which provides hook points to trace all queries.
 
 ## Use cases
 
@@ -14,9 +14,55 @@ jdbc-tracer is a JDBC driver, which provides hook points to trace all queries.
  * Logging queries and parameters.
  * Detect webapp controller, that sends too much SQL queries.
 
-## Listeners
+## Usage
 
-You need to implement PreparedStatementListener or ResultSetListener.
+If your JDBC uri is this:
+
+    jdbc:mysql://localhost/test
+
+Then, you need to rewrite the uri as following:
+
+    jdbc:querylog:mysql://localhost/test
+
+That's all.
+
+### Options
+
+#### `QueryLogDriver.setExplain(true)` : Default false
+
+Enable automatic EXPLAIN statement generation.
+
+(Note, this feature only supports mysql. patches welcome)
+
+#### `QueryLogDriver.setCompact(true)` : Default true
+
+Compact SQL query before query logging.
+
+#### `QueryLogDriver.setQueryHandler(Connection connection, String query)`
+
+        QueryLogDriver.setQueryHandler((connection, query) -> {
+            System.err.println("Query: " + query);
+        });
+
+Added query handler. If you set this handler, querylog pass the query to
+the callback handler.
+
+#### `QueryLogDriver.setExplainHandler(ExplainHandler printExplain)`
+
+        QueryLogDriver.setExplainHandler((connection, query, header, rows) -> {
+            System.err.println("Query: " + query);
+            System.err.println("Header: " + Arrays.toString(header));
+            System.err.println("Rows: " + rows.stream()
+                    .map(it -> Arrays.stream(it).collect(Collectors.joining(",")))
+                    .collect(Collectors.joining("\n")));
+        });
+
+Set explain handler. If you call `QueryLogDriver.setExplain(true)`, querylog
+sends EXPLAIN statement to DB server, and pass the results to the callback listener.
+
+## jdbc-tracer
+
+jdbc-querylog is based on jdbc-tracer. jdbc-tracer provides following two listener interfaces.
 
 ### PreparedStatementListener
 
@@ -40,6 +86,12 @@ You can get following values for each got rows:
 ## Install
 
 You can install this library from maven central.
+
+## SEE ALSO
+
+This is a port of Perl5's DBIx::QueryLog.
+
+http://search.cpan.org/perldoc?DBIx%3A%3AQueryLog
 
 ## License
 
