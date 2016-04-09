@@ -26,6 +26,6 @@ public class ColumnValuesTest {
     public void testToString() throws Exception {
         ColumnValues columnValues = new ColumnValues();
         assertThat(columnValues.toString())
-                .isEqualTo("ColumnValues{columnValues={}}");
+                .isEqualTo("ColumnValues{values={}}");
     }
 }

@@ -33,7 +33,7 @@ class ColumnValues {
     List<Object> values() {
         return values.entrySet()
                 .stream()
-                .sorted(Comparator.comparing(Map.Entry::getKey, reverseOrder()))
+                .sorted(Comparator.comparing(Map.Entry::getKey))
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
     }
