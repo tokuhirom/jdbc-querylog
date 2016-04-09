@@ -1,7 +1,7 @@
 # jdbc-tracer
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.geso.jdbctracer/jdbc-tracer/badge.svg)](https://maven-badges.herokuapp.com/maven-central/me.geso.jdbctracer/jdbc-tracer)
-[![javadoc.io](https://javadocio-badges.herokuapp.com/me.geso.jdbctracer/jdbc-tracer/badge.svg)](https://javadocio-badges.herokuapp.com/me.geso.jdbctracer/jdbc-tracer)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/me.geso.jdbcquerylog/jdbc-tracer/badge.svg)](https://maven-badges.herokuapp.com/maven-central/me.geso.jdbcquerylog/jdbc-tracer)
+[![javadoc.io](https://javadocio-badges.herokuapp.com/me.geso.jdbcquerylog/jdbc-tracer/badge.svg)](https://javadocio-badges.herokuapp.com/me.geso.jdbcquerylog/jdbc-tracer)
 [![Circle CI](https://circleci.com/gh/tokuhirom/jdbc-querylog.svg?style=svg)](https://circleci.com/gh/tokuhirom/jdbc-querylog)
 
 jdbc-tracer is a JDBC driver, which provides hook points to trace all queries.
