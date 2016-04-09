@@ -1,36 +1,39 @@
 package me.geso.jdbctracer;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.reverseOrder;
+
 class ColumnValues {
-    private final Map<Integer, Object> columnValues;
+    private final Map<Integer, Object> values;
 
     ColumnValues() {
-        columnValues = new HashMap<>();
+        values = new HashMap<>();
     }
 
     void put(Integer key, Object value) {
-        columnValues.put(key, value);
+        values.put(key, value);
     }
 
     void clear() {
-        columnValues.clear();
+        values.clear();
     }
 
     @Override
     public String toString() {
         return "ColumnValues{" +
-                "columnValues=" + columnValues +
+                "values=" + values +
                 '}';
     }
 
     List<Object> values() {
-        return columnValues.entrySet()
+        return values.entrySet()
                 .stream()
-                .sorted((a, b) -> a.getKey() - b.getKey())
+                .sorted(Comparator.comparing(Map.Entry::getKey, reverseOrder()))
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
     }
