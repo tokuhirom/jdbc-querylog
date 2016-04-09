@@ -6,6 +6,48 @@
 
 jdbc-querylog is a JDBC driver, which provides hook points to trace all queries.
 
+## SYNOPSIS
+
+Use 'jdbc:querylog:' prefix for JDBC connection uri.
+
+        QueryLogDriver.setExplain(true);
+        try (Connection conn = DriverManager.getConnection("jdbc:querylog:h2:mem:test")) {
+            try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM user WHERE id=?")) {
+                stmt.setInt(1, 1);
+                try (ResultSet resultSet = stmt.executeQuery()) {
+                }
+            }
+            try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM user")) {
+                try (ResultSet resultSet = stmt.executeQuery()) {
+                }
+            }
+        }
+
+Then, you got automatic EXPLAIN.
+
+    Query: SELECT * FROM user WHERE id=1
+    ┌────────────────────────────────────────┐
+    │ PLAN                                   │
+    ├────────────────────────────────────────┤
+    │ SELECT                                 │
+    │ USER.ID,                               │
+    │ USER.NAME                              │
+    │ FROM PUBLIC.USER                       │
+    │ /* PUBLIC.PRIMARY_KEY_2: ID = 1 */     │
+    │ WHERE ID = 1                           │
+    └────────────────────────────────────────┘
+
+    Query: SELECT * FROM user
+    ┌─────────────────────────────────┐
+    │ PLAN                            │
+    ├─────────────────────────────────┤
+    │ SELECT                          │
+    │ USER.ID,                        │
+    │ USER.NAME                       │
+    │ FROM PUBLIC.USER                │
+    │ /* PUBLIC.USER.tableScan */     │
+    └─────────────────────────────────┘
+
 ## Use cases
 
  * Record all statements executed by JDBC driver

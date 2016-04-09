@@ -1,10 +1,13 @@
 package com.example;
 
+import de.vandermeer.asciitable.v2.RenderedTable;
+import de.vandermeer.asciitable.v2.V2_AsciiTable;
+import de.vandermeer.asciitable.v2.render.V2_AsciiTableRenderer;
+import de.vandermeer.asciitable.v2.render.WidthLongestLine;
+import de.vandermeer.asciitable.v2.themes.V2_E_TableThemes;
 import me.geso.jdbcquerylog.QueryLogDriver;
 
 import java.sql.*;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
@@ -25,11 +28,18 @@ public class Main {
             System.err.println("Query: " + query);
         });
         QueryLogDriver.setExplainHandler((connection, query, header, rows) -> {
-            System.err.println("Query: " + query);
-            System.err.println("Header: " + Arrays.toString(header));
-            System.err.println("Rows: " + rows.stream()
-                    .map(it -> Arrays.stream(it).collect(Collectors.joining(",")))
-                    .collect(Collectors.joining("\n")));
+            V2_AsciiTable at = new V2_AsciiTable();
+            at.addRule();
+            at.addRow((Object[]) header);
+            at.addRule();
+            rows.forEach(at::addRow);
+            at.addRule();
+
+            V2_AsciiTableRenderer rend = new V2_AsciiTableRenderer();
+            rend.setTheme(V2_E_TableThemes.UTF_LIGHT.get());
+            rend.setWidth(new WidthLongestLine());
+            RenderedTable render = rend.render(at);
+            System.err.println(render.toString());
         });
 
         try (Connection conn = DriverManager.getConnection("jdbc:querylog:h2:mem:test")) {

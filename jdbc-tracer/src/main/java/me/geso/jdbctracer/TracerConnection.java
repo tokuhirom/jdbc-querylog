@@ -35,8 +35,8 @@ public class TracerConnection implements InvocationHandler {
      * @return Created connection object.
      */
     public static Connection newInstance(@NonNull Connection connection,
-                                  @NonNull PreparedStatementListener psl,
-                                  @NonNull ResultSetListener rsl) {
+                                         /* nullable */ PreparedStatementListener psl,
+                                  /* nullable */ ResultSetListener rsl) {
         return (Connection) Proxy.newProxyInstance(
                 TracerConnection.class.getClassLoader(),
                 new Class<?>[]{Connection.class},
