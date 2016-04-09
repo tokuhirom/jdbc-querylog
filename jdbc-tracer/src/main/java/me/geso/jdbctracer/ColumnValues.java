@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.reverseOrder;
-
 class ColumnValues {
     private final Map<Integer, Object> values;
 

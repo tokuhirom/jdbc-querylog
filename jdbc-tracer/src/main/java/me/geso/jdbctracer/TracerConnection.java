@@ -16,7 +16,7 @@ import java.util.Objects;
  * Traced connection
  */
 public class TracerConnection implements InvocationHandler {
-    private Connection connection;
+    private final Connection connection;
     private final PreparedStatementListener preparedStatementListener;
     private final ResultSetListener resultSetListener;
 
