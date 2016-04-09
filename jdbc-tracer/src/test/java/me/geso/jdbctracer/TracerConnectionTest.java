@@ -73,7 +73,7 @@ public class TracerConnectionTest {
     @Test
     public void prepareCall() throws Exception {
         when(connection.prepareCall("foo")).thenReturn(mock(CallableStatement.class));
-        try (CallableStatement statement = target.prepareCall("foo");) {
+        try (CallableStatement statement = target.prepareCall("foo")) {
             assertThat(statement.toString())
                     .contains("TracerPreparedStatement");
             verify(connection, times(1))
